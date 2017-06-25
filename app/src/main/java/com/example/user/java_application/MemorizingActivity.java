@@ -41,8 +41,6 @@ public class MemorizingActivity extends AppCompatActivity {
             touch_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-
                     Intent intent = new Intent(getApplicationContext(), CheckActivity.class);
                     intent.putExtra("Answer",Mword[j][0]);
                     intent.putExtra("meaning",Hword[j]);
