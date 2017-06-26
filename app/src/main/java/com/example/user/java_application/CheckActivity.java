@@ -38,7 +38,7 @@ public class CheckActivity extends AppCompatActivity {
         check_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String answer=getIntent().getExtras().getString("Answer");
+                String answer= getIntent().getExtras().getString("Answer");
                 String meaning_word = getIntent().getExtras().getString("meaning");
 
                 String in_str = in_word.getText().toString();
@@ -67,7 +67,8 @@ public class CheckActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         // TODO
-                        eng_word.setText("");
+
+                      eng_word.setText("");
                     }
                 }, 1000);
             }

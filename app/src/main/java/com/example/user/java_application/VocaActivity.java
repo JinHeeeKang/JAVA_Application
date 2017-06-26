@@ -8,23 +8,33 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
 public class VocaActivity extends AppCompatActivity {
-    String[] Eword = {"preach","abolition","breakthrough","frequency","sodium","dependence","parent","alteration","vegetarian","population","dismiss"};
-    String[] Hword = {"설교하다","폐지","돌파구","빈도","나트륨","의존","부모","변화","채식주의자","인구","해고하다"};
-    int num = 11;
+    String[] Eword = {"preach","abolition","breakthrough","frequency","sodium","dependence","parent","alteration","vegetarian",
+            "population","dismiss","parallel","depressed","dignity","dye"};
+    String[] Hword = {"설교하다","폐지","돌파구","빈도","나트륨","의존","부모","변화","채식주의자",
+            "인구","해고하다", "평행한","우울한","위엄","염색하다"};
+    int num = 15;
 
     TextView voca_word,voca_mark;
-    Button voca_end;
+    Button voca_end,voca_add;
     Button one,two,three,four;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voca);
+
+        final List<String> EwordList = new ArrayList<String>();
+        final List<String> HwordList = new ArrayList<String>();
+        for(int p =0; p<num;p++){
+            EwordList.add(Eword[p]);
+            HwordList.add(Hword[p]);
+        }
 
         Intent intentt = getIntent();
         final int ret = intentt.getIntExtra("num",1);
@@ -32,13 +42,15 @@ public class VocaActivity extends AppCompatActivity {
             Toast.makeText(VocaActivity.this,"통과!",Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
-
             finish();
         }
+
+
 
         voca_mark = (TextView)findViewById(R.id.voca_mark);
         voca_word = (TextView)findViewById(R.id.voca_word);
 
+        voca_add = (Button) findViewById(R.id.voca_add);
         voca_end = (Button) findViewById(R.id.voca_end);
         one = (Button) findViewById(R.id.buttonOne);
         two = (Button) findViewById(R.id.buttonTwo);
@@ -52,12 +64,12 @@ public class VocaActivity extends AppCompatActivity {
         final int j = rand.nextInt(4);
 
         int i = rand.nextInt(num);
-        voca_word.setText(Eword[i]);
+        voca_word.setText(EwordList.get(i));
         switch (j){
-            case 0 : one.setText(Hword[i]);two.setText(Hword[(i+1)%num]);three.setText(Hword[(i+2)%num]);four.setText(Hword[(i+3)%num]);break;
-            case 1 : two.setText(Hword[i]);one.setText(Hword[(i+1)%num]);three.setText(Hword[(i+2)%num]);four.setText(Hword[(i+3)%num]);break;
-            case 2 : three.setText(Hword[i]);two.setText(Hword[(i+1)%num]);one.setText(Hword[(i+2)%num]);four.setText(Hword[(i+3)%num]);break;
-            case 3 : four.setText(Hword[i]);two.setText(Hword[(i+1)%num]);three.setText(Hword[(i+2)%num]);one.setText(Hword[(i+3)%num]);break;
+            case 0 : one.setText(HwordList.get(i));two.setText(HwordList.get((i+1)%num));three.setText(HwordList.get((i+2)%num));four.setText(HwordList.get((i+3)%num));break;
+            case 1 : two.setText(HwordList.get(i));one.setText(HwordList.get((i+1)%num));three.setText(HwordList.get((i+2)%num));four.setText(HwordList.get((i+3)%num));break;
+            case 2 : three.setText(HwordList.get(i));two.setText(HwordList.get((i+1)%num));one.setText(HwordList.get((i+2)%num));four.setText(HwordList.get((i+3)%num));break;
+            case 3 : four.setText(HwordList.get(i));two.setText(HwordList.get((i+1)%num));three.setText(HwordList.get((i+2)%num));one.setText(HwordList.get((i+3)%num));break;
         }
 
 
@@ -68,9 +80,24 @@ public class VocaActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
 
-                finish();
+            finish();
+        }
+    });
+       voca_add.setText("단 어 추 가");
+        voca_add.setOnClickListener(new View.OnClickListener() {
+        @Override
+            public void onClick(View v) {
+            String eng_word = getIntent().getExtras().getString("eng");
+            String kr_word = getIntent().getExtras().getString("kr");
+            int n = EwordList.size();
+            EwordList.add(n , eng_word);
+            HwordList.add(n , kr_word);
+            voca_word.setText(EwordList.get(n));
+
+
             }
         });
+
 
         one.setOnClickListener(new View.OnClickListener() {
             @Override

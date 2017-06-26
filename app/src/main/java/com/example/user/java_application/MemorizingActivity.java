@@ -8,15 +8,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class MemorizingActivity extends AppCompatActivity {
 
-    String[][] Mword = {{"destination"},{"confident"},{"prescription"},{"vegetarian"},{"population"},{"consciousness"}};
+    String[] Mword = {"destination","confident","prescription","vegetarian","population","consciousness"};
     String[] Hword = {"목적지","자신감있는","처방전","채식주의자","인구","의식"};
-    //{"d","e","s","t","i","n","a","t","i","o","n"},{"c","o","n","f","i","d","e","n","t"}
 
-    Button memo_end,touch_button;
+
+    Button memo_end,memo_add,here_btn;
     TextView memo_mark;
     TextView m_word;
     int num = 6;
@@ -29,21 +31,44 @@ public class MemorizingActivity extends AppCompatActivity {
         memo_mark = (TextView) findViewById(R.id.memo_mark);
         m_word = (TextView) findViewById(R.id.m_word);
         memo_end = (Button) findViewById(R.id.memo_end);
-        touch_button = (Button) findViewById(R.id.touch_button);
+        memo_add= (Button) findViewById(R.id.memo_add);
+        here_btn = (Button) findViewById(R.id.here_btn);
 
         memo_mark.setText("암 기 공 부 (Memorizing)");
-        touch_button.setText("HERE");
+        here_btn.setText("HERE");
+
+        final List<String> MwordList = new ArrayList<String>();
+        final List<String> HwordList = new ArrayList<String>();
+        for(int p =0; p<num;p++){
+           MwordList.add(Mword[p]);
+           HwordList.add(Hword[p]);
+       }
 
         Random rand = new Random();
         final int j = rand.nextInt(6);
+        final int i = 0;
+        m_word.setText( MwordList.get(j));
 
-        m_word.setText(Mword[j][0]);
-            touch_button.setOnClickListener(new View.OnClickListener() {
+        memo_add.setText("단 어 추 가");
+        memo_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String eng_word = getIntent().getExtras().getString("eng");
+                String kr_word = getIntent().getExtras().getString("kr");
+                int n = MwordList.size();
+                MwordList.add(n , eng_word);
+                HwordList.add(n , kr_word);
+                m_word.setText( MwordList.get(n));
+
+            }
+        });
+
+        here_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(), CheckActivity.class);
-                    intent.putExtra("Answer",Mword[j][0]);
-                    intent.putExtra("meaning",Hword[j]);
+                    intent.putExtra("Answer",MwordList.get(j));
+                    intent.putExtra("meaning",HwordList.get(j));
 
                     Handler delayHandler = new Handler();
                     delayHandler.postDelayed(new Runnable() {
@@ -56,11 +81,6 @@ public class MemorizingActivity extends AppCompatActivity {
 
                 }
             });
-
-
-
-
-
 
 
         memo_end.setText("뒤 로 가 기");
